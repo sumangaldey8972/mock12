@@ -44,8 +44,12 @@ app.get("/", async (req, res) => {
       if (!size) {
         size = 10;
       }
-      let limit = parseInt(size);
-      const job = await jobModel.find().limit(limit);
+      size = Number(size);
+      const job = await jobModel
+        .find()
+        .skip((page - 1) * size)
+        .limit(size);
+      // .exec();
       res.send({ message: "data fetch successfull", data: job });
     }
   } catch (err) {
